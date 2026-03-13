@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#08080b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="StockRoom LITE — Warehouse Inventory Management">
+<title>StockRoom LITE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+/*═══════════════════════════════════════════════════════════
+  STOCKROOM LITE — DESIGN SYSTEM
+  Aesthetic: Industrial Utilitarian / Dark Forge
+  Palette: Deep void + amber forge accent
+═══════════════════════════════════════════════════════════*/
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  /* Depths */
+  --void:#08080b;--base:#0c0c10;--raised:#111115;--surf:#18181d;
+  --surf2:#1e1e24;--surf3:#25252c;--surf4:#2d2d35;
+  /* Edges */
+  --edge:rgba(255,255,255,.04);--edgeM:rgba(255,255,255,.08);
+  --edgeH:rgba(255,255,255,.12);--edgeA:rgba(212,162,38,.32);
+  /* Ink */
+  --ink:#ede9dd;--ink2:#908e87;--ink3:#5f5d58;--ink4:#3d3c38;
+  /* Amber — Primary */
+  --am:#d4a226;--amSoft:#c4942a;--amDim:rgba(212,162,38,.10);
+  --amGlow:rgba(212,162,38,.05);--amText:#f0d68a;
+  /* Semantic */
+  --gn:#39c078;--gnDim:rgba(57,192,120,.10);
+  --rd:#dc4e4e;--rdDim:rgba(220,78,78,.10);
+  --bl:#5e9ef5;--blDim:rgba(94,158,245,.10);
+  --or:#e89030;--orDim:rgba(232,144,48,.10);
+  /* Radii */
+  --rs:4px;--rm:7px;--rl:11px;--rxl:15px;
+  /* Fonts */
+  --mono:'DM Mono',monospace;--sans:'Plus Jakarta Sans',system-ui,sans-serif;
+  /* Safe areas */
+  --sab:env(safe-area-inset-bottom,0px);--sat:env(safe-area-inset-top,0px);
+}
+
+html,body{
+  height:100%;background:var(--void);color:var(--ink);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  user-select:none;line-height:1.45;
+}
+
+/* Subtle scanline texture */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.015;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.04) 3px,rgba(255,255,255,.04) 4px);
+}
+
+/* ═══ UTILITY ═══ */
+.hide{display:none!important}
+.mono{font-family:var(--mono)}
+.truncate{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+input,select,textarea{font-family:inherit}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* ═══ APP SHELL ═══ */
+#app{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+
+/* ═══════════════════════════
+   LOGIN SCREEN
+═══════════════════════════ */
+#loginScreen{
+  position:fixed;inset:0;z-index:1000;background:var(--void);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;gap:32px;
+}
+.login-brand{display:flex;flex-direction:column;align-items:center;gap:10px}
+.login-logo{
+  width:56px;height:56px;background:var(--am);border-radius:14px;
+  display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+}
+.login-logo span{font-family:var(--mono);font-weight:500;font-size:26px;color:var(--void);position:relative;z-index:1}
+.login-logo::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.28),transparent 50%)}
+.login-title{font-family:var(--mono);font-size:18px;font-weight:500;letter-spacing:4px;color:var(--ink)}
+.login-sub{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--ink3);margin-top:-4px}
+
+.login-form{display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px}
+.login-select{
+  width:100%;padding:12px 14px;background:var(--raised);border:1px solid var(--edgeM);
+  border-radius:var(--rl);color:var(--ink);font-size:14px;font-family:var(--sans);
+  outline:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%235f5d58' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
+}
+.login-select option{background:var(--raised);color:var(--ink)}
+.login-pin-wrap{display:flex;gap:8px;justify-content:center}
+.login-pin-dot{
+  width:44px;height:50px;background:var(--raised);border:1px solid var(--edgeM);
+  border-radius:var(--rm);text-align:center;font-family:var(--mono);font-size:22px;
+  font-weight:500;color:var(--am);outline:none;letter-spacing:0;
+}
+.login-pin-dot:focus{border-color:var(--am)}
+.login-btn{
+  width:100%;padding:14px;background:var(--am);color:var(--void);font-size:14px;
+  font-weight:700;border-radius:var(--rl);transition:all .15s;letter-spacing:.5px;
+}
+.login-btn:active{transform:scale(.97);background:var(--amSoft)}
+.login-btn:disabled{opacity:.4;pointer-events:none}
+.login-link{
+  font-family:var(--mono);font-size:11px;color:var(--ink3);text-align:center;
+  letter-spacing:.5px;padding:4px;
+}
+.login-link u{color:var(--am);cursor:pointer;text-decoration:none;border-bottom:1px solid var(--amDim)}
+.login-error{
+  font-size:12px;color:var(--rd);text-align:center;min-height:18px;
+  font-family:var(--mono);letter-spacing:.3px;
+}
+
+/* ═══════════════════════════
+   HEADER
+═══════════════════════════ */
+.hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:calc(var(--sat) + 6px) 14px 7px;background:var(--base);
+  border-bottom:1px solid var(--edge);flex-shrink:0;z-index:100;
+}
+.hdr-left{display:flex;align-items:center;gap:8px}
+.hdr-mark{
+  width:24px;height:24px;background:var(--am);border-radius:5px;
+  display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+}
+.hdr-mark span{font-family:var(--mono);font-weight:500;font-size:12px;color:var(--void);position:relative;z-index:1}
+.hdr-mark::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.3),transparent 50%)}
+.hdr-text{display:flex;flex-direction:column}
+.hdr-name{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:2px;color:var(--ink);line-height:1}
+.hdr-sub{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--ink3);margin-top:2px}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.hdr-chip{
+  font-family:var(--mono);font-size:9px;color:var(--ink2);letter-spacing:.5px;
+  background:var(--surf);border:1px solid var(--edge);border-radius:var(--rm);padding:4px 8px;
+  display:flex;align-items:center;gap:5px;
+}
+.hdr-chip .dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.hdr-chip .dot.on{background:var(--gn);box-shadow:0 0 6px rgba(57,192,120,.4)}
+.hdr-chip .dot.off{background:var(--rd)}
+.hdr-logout{
+  font-family:var(--mono);font-size:9px;color:var(--ink3);padding:4px 8px;
+  background:var(--surf);border:1px solid var(--edge);border-radius:var(--rm);
+  letter-spacing:.5px;
+}
+.hdr-logout:active{background:var(--surf2)}
+
+/* ═══════════════════════════
+   PAGE CONTAINER
+═══════════════════════════ */
+.pages{flex:1;overflow:hidden;position:relative}
+.pg{
+  position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;padding:14px 14px calc(68px + var(--sab));
+  opacity:0;transform:translateY(6px);
+  transition:opacity .2s ease,transform .2s ease;pointer-events:none;
+}
+.pg.on{opacity:1;transform:none;pointer-events:auto}
+.pg::-webkit-scrollbar{width:0}
+
+/* ═══════════════════════════
+   SECTION LABELS
+═══════════════════════════ */
+.slbl{
+  font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:2px;
+  text-transform:uppercase;color:var(--ink3);margin-bottom:10px;padding-left:1px;
+}
+
+/* ═══════════════════════════
+   METRIC CARDS
+═══════════════════════════ */
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.mcard{
+  background:var(--raised);border:1px solid var(--edge);border-radius:var(--rl);
+  padding:12px 14px;position:relative;overflow:hidden;
+}
+.mcard.hi{border-color:var(--edgeA);background:linear-gradient(160deg,var(--raised),var(--amGlow))}
+.mcard .mv{font-family:var(--mono);font-size:26px;font-weight:500;line-height:1;margin-bottom:3px}
+.mcard.hi .mv{color:var(--am)}
+.mcard .ml{font-size:10px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.3px}
+.mcard .mt{
+  position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;
+  font-weight:500;padding:2px 5px;border-radius:3px;
+}
+.mt.warn{color:var(--rd);background:var(--rdDim)}
+.mt.good{color:var(--gn);background:var(--gnDim)}
+
+/* ═══════════════════════════
+   FEED ITEMS
+═══════════════════════════ */
+.feed{display:flex;flex-direction:column;gap:5px;margin-bottom:20px}
+.fi{
+  display:flex;align-items:flex-start;gap:10px;background:var(--raised);
+  border:1px solid var(--edge);border-radius:var(--rm);padding:10px 12px;
+}
+.fi-icon{
+  width:30px;height:30px;border-radius:var(--rs);display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;font-size:13px;
+}
+.fi-icon.scan{background:var(--amDim)}
+.fi-icon.add{background:var(--gnDim)}
+.fi-icon.edit{background:var(--blDim)}
+.fi-icon.del{background:var(--rdDim)}
+.fi-icon.move{background:var(--orDim)}
+.fi-body{flex:1;min-width:0}
+.fi-title{font-size:12px;font-weight:600;color:var(--ink);line-height:1.3}
+.fi-meta{font-family:var(--mono);font-size:9px;color:var(--ink3);margin-top:1px;letter-spacing:.3px}
+.fi-time{font-family:var(--mono);font-size:9px;color:var(--ink4);flex-shrink:0;margin-top:2px}
+
+/* ═══════════════════════════
+   SCAN PAGE
+═══════════════════════════ */
+.scan-zone{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:55vh;gap:20px;
+}
+.scan-toggle{
+  display:flex;background:var(--raised);border:1px solid var(--edge);
+  border-radius:var(--rl);padding:3px;gap:2px;width:100%;max-width:300px;
+}
+.scan-toggle button{
+  flex:1;padding:9px;font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;border-radius:var(--rm);
+  color:var(--ink3);transition:all .15s;
+}
+.scan-toggle button.on{background:var(--am);color:var(--void)}
+
+.scan-ring{
+  width:160px;height:160px;border-radius:50%;border:2px solid var(--edgeM);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .4s cubic-bezier(.16,1,.3,1);
+}
+.scan-ring.active{
+  border-color:var(--am);
+  box-shadow:0 0 0 10px var(--amGlow),0 0 40px var(--amGlow);
+  animation:ringPulse 1.8s ease-in-out infinite;
+}
+.scan-ring.hit{border-color:var(--gn);box-shadow:0 0 0 10px var(--gnDim),0 0 30px var(--gnDim)}
+@keyframes ringPulse{
+  0%,100%{box-shadow:0 0 0 10px var(--amGlow),0 0 40px var(--amGlow)}
+  50%{box-shadow:0 0 0 18px rgba(212,162,38,.02),0 0 50px var(--amGlow)}
+}
+.scan-ring-inner{font-size:42px;opacity:.5;transition:opacity .3s}
+.scan-ring.active .scan-ring-inner,.scan-ring.hit .scan-ring-inner{opacity:1}
+.scan-lbl{
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--ink3);text-align:center;transition:color .3s;
+}
+.scan-lbl.lit{color:var(--am)}
+
+/* Viewfinder */
+.vf{
+  width:100%;max-width:320px;aspect-ratio:4/3;background:var(--void);
+  border:2px solid var(--edgeM);border-radius:var(--rl);position:relative;overflow:hidden;
+}
+.vf video{width:100%;height:100%;object-fit:cover}
+.vf-corner{position:absolute;width:20px;height:20px;border-color:var(--am);border-style:solid}
+.vf-tl{top:16px;left:16px;border-width:2px 0 0 2px;border-radius:2px 0 0 0}
+.vf-tr{top:16px;right:16px;border-width:2px 2px 0 0;border-radius:0 2px 0 0}
+.vf-bl{bottom:16px;left:16px;border-width:0 0 2px 2px;border-radius:0 0 0 2px}
+.vf-br{bottom:16px;right:16px;border-width:0 2px 2px 0;border-radius:0 0 2px 0}
+.vf-line{
+  position:absolute;left:16px;right:16px;height:2px;background:var(--am);
+  box-shadow:0 0 10px var(--am);opacity:.7;animation:vfSweep 2.2s ease-in-out infinite;
+}
+@keyframes vfSweep{0%{top:16px}50%{top:calc(100% - 18px)}100%{top:16px}}
+
+/* ═══════════════════════════
+   INVENTORY LIST
+═══════════════════════════ */
+.search-wrap{position:relative;margin-bottom:14px}
+.search-wrap input{
+  width:100%;padding:11px 14px 11px 36px;background:var(--raised);border:1px solid var(--edge);
+  border-radius:var(--rl);color:var(--ink);font-size:13px;outline:none;transition:border-color .15s;
+}
+.search-wrap input::placeholder{color:var(--ink4)}
+.search-wrap input:focus{border-color:var(--am)}
+.search-wrap .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--ink4);pointer-events:none}
+
+.inv-list{display:flex;flex-direction:column;gap:5px}
+.inv-item{
+  display:flex;align-items:center;gap:10px;background:var(--raised);
+  border:1px solid var(--edge);border-radius:var(--rm);padding:10px 12px;
+  cursor:pointer;transition:background .12s,border-color .12s;
+}
+.inv-item:active{background:var(--surf2);border-color:var(--edgeM)}
+.inv-sku{
+  font-family:var(--mono);font-size:10px;font-weight:500;color:var(--am);
+  background:var(--amDim);padding:3px 7px;border-radius:var(--rs);flex-shrink:0;
+  letter-spacing:.3px;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.inv-info{flex:1;min-width:0}
+.inv-name{font-size:12px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inv-loc{font-family:var(--mono);font-size:9px;color:var(--ink3);margin-top:1px;letter-spacing:.3px}
+.inv-qty{font-family:var(--mono);font-size:16px;font-weight:500;flex-shrink:0}
+.inv-qty.low{color:var(--rd)}
+.inv-qty.mid{color:var(--or)}
+.inv-qty.ok{color:var(--ink)}
+
+/* ═══════════════════════════
+   FORMS
+═══════════════════════════ */
+.fg{margin-bottom:12px}
+.fl{
+  display:block;font-family:var(--mono);font-size:9px;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;
+}
+.fi-input{
+  width:100%;padding:10px 12px;background:var(--raised);border:1px solid var(--edge);
+  border-radius:var(--rm);color:var(--ink);font-size:13px;outline:none;transition:border-color .15s;
+}
+.fi-input:focus{border-color:var(--am)}
+.fi-input::placeholder{color:var(--ink4)}
+select.fi-input{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%235f5d58' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
+}
+select.fi-input option{background:var(--raised);color:var(--ink)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* ═══════════════════════════
+   BUTTONS
+═══════════════════════════ */
+.btn{
+  width:100%;padding:12px 16px;border-radius:var(--rl);font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:6px;transition:all .12s;
+  letter-spacing:.3px;
+}
+.btn:active{transform:scale(.97)}
+.btn-p{background:var(--am);color:var(--void)}
+.btn-p:active{background:var(--amSoft)}
+.btn-s{background:var(--surf);color:var(--ink);border:1px solid var(--edge)}
+.btn-s:active{background:var(--surf2)}
+.btn-d{background:var(--rdDim);color:var(--rd);border:1px solid rgba(220,78,78,.15)}
+.btn-d:active{background:rgba(220,78,78,.18)}
+
+/* ═══════════════════════════
+   BOTTOM NAV
+═══════════════════════════ */
+.bnav{
+  display:flex;background:var(--base);border-top:1px solid var(--edge);
+  padding-bottom:var(--sab);flex-shrink:0;z-index:100;position:relative;
+}
+.bnav::before{
+  content:'';position:absolute;top:-16px;left:0;right:0;height:16px;
+  background:linear-gradient(to top,var(--void),transparent);pointer-events:none;
+}
+.bnav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:7px 0 5px;gap:2px;color:var(--ink4);transition:color .15s;position:relative;
+}
+.bnav-item.on{color:var(--am)}
+.bnav-item.on::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:18px;height:2px;background:var(--am);border-radius:0 0 2px 2px;
+}
+.bnav-item .ni{font-size:18px;line-height:1}
+.bnav-item .nl{font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:.8px;text-transform:uppercase}
+
+/* ═══════════════════════════
+   TOAST
+═══════════════════════════ */
+.toast{
+  position:fixed;top:calc(var(--sat) + 52px);left:12px;right:12px;z-index:900;
+  background:var(--surf);border:1px solid var(--edgeM);border-radius:var(--rl);
+  padding:12px 14px;display:flex;align-items:center;gap:8px;
+  transform:translateY(-120%);opacity:0;transition:all .3s cubic-bezier(.16,1,.3,1);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.toast.vis{transform:translateY(0);opacity:1}
+.toast.ok{border-color:rgba(57,192,120,.25)}
+.toast.err{border-color:rgba(220,78,78,.25)}
+.toast.info{border-color:rgba(94,158,245,.25)}
+.toast-i{font-size:16px;flex-shrink:0}
+.toast-t{font-size:12px;font-weight:600;color:var(--ink)}
+.toast-s{font-family:var(--mono);font-size:9px;color:var(--ink3);margin-top:1px}
+
+/* ═══════════════════════════
+   MODAL / BOTTOM SHEET
+═══════════════════════════ */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  z-index:500;opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-bg.vis{opacity:1;pointer-events:auto}
+.modal-sheet{
+  position:fixed;bottom:0;left:0;right:0;background:var(--base);
+  border-top:1px solid var(--edgeM);border-radius:var(--rxl) var(--rxl) 0 0;
+  z-index:501;padding:16px 16px calc(16px + var(--sab));max-height:85vh;
+  overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.16,1,.3,1);
+}
+.modal-sheet.vis{transform:translateY(0)}
+.modal-sheet::-webkit-scrollbar{width:0}
+.modal-handle{width:32px;height:3px;background:var(--edgeH);border-radius:2px;margin:0 auto 14px}
+.modal-title{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.modal-sku{font-family:var(--mono);font-size:11px;color:var(--am);margin-bottom:14px}
+
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px}
+.dcell{background:var(--raised);border:1px solid var(--edge);border-radius:var(--rm);padding:8px 10px}
+.dcell .dl{font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:3px}
+.dcell .dv{font-size:14px;font-weight:700;color:var(--ink)}
+
+.qty-adj{display:flex;align-items:center;justify-content:center;gap:16px;margin:14px 0}
+.qty-btn{
+  width:44px;height:44px;border-radius:50%;border:1px solid var(--edgeM);
+  background:var(--raised);font-size:20px;font-weight:300;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+}
+.qty-btn:active{background:var(--am);color:var(--void);border-color:var(--am)}
+.qty-val{font-family:var(--mono);font-size:32px;font-weight:500;min-width:70px;text-align:center}
+
+.modal-acts{display:flex;gap:6px;margin-top:6px}
+.modal-acts .btn{flex:1;padding:11px}
+
+/* ═══════════════════════════
+   CONFIRM DIALOG
+═══════════════════════════ */
+.confirm-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:600;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.confirm-bg.vis{opacity:1;pointer-events:auto}
+.confirm-box{
+  background:var(--base);border:1px solid var(--edgeM);border-radius:var(--rxl);
+  padding:24px 20px 20px;max-width:320px;width:100%;text-align:center;
+  transform:scale(.95);transition:transform .25s cubic-bezier(.16,1,.3,1);
+}
+.confirm-bg.vis .confirm-box{transform:scale(1)}
+.confirm-icon{font-size:32px;margin-bottom:10px}
+.confirm-title{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.confirm-msg{font-size:12px;color:var(--ink2);line-height:1.5;margin-bottom:18px}
+.confirm-acts{display:flex;gap:8px}
+.confirm-acts .btn{flex:1;padding:11px;font-size:12px}
+
+/* ═══════════════════════════
+   ADMIN PANEL
+═══════════════════════════ */
+.admin-card{
+  background:var(--raised);border:1px solid var(--edge);border-radius:var(--rl);
+  padding:14px;margin-bottom:10px;
+}
+.admin-card-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px}
+.admin-user{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid var(--edge);
+}
+.admin-user:last-child{border:none}
+.admin-user-info{display:flex;flex-direction:column;gap:1px}
+.admin-user-name{font-size:12px;font-weight:600}
+.admin-user-role{font-family:var(--mono);font-size:9px;color:var(--ink3);letter-spacing:.5px}
+.admin-user-acts{display:flex;gap:6px}
+.admin-small-btn{
+  font-family:var(--mono);font-size:9px;padding:4px 8px;border-radius:var(--rs);
+  border:1px solid var(--edge);color:var(--ink2);letter-spacing:.3px;
+}
+.admin-small-btn:active{background:var(--surf2)}
+.admin-small-btn.danger{color:var(--rd);border-color:rgba(220,78,78,.2)}
+
+/* Location Manager */
+.loc-list{display:flex;flex-direction:column;gap:4px}
+.loc-item{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surf);border:1px solid var(--edge);border-radius:var(--rm);
+  padding:8px 10px;
+}
+.loc-name{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--ink)}
+.loc-count{font-family:var(--mono);font-size:10px;color:var(--ink3)}
+
+/* Category chips */
+.cat-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.cat-chip{
+  font-family:var(--mono);font-size:10px;padding:5px 10px;border-radius:20px;
+  border:1px solid var(--edge);color:var(--ink2);display:flex;align-items:center;gap:5px;
+}
+.cat-chip .x{color:var(--rd);font-size:12px;cursor:pointer}
+
+/* ═══════════════════════════
+   EMPTY STATE
+═══════════════════════════ */
+.empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:40px 20px;color:var(--ink4);
+}
+.empty-icon{font-size:36px;margin-bottom:10px;opacity:.35}
+.empty-text{font-size:12px;line-height:1.5}
+
+/* ═══════════════════════════
+   TRANSACTION LOG
+═══════════════════════════ */
+.txn{
+  display:flex;align-items:flex-start;gap:8px;padding:8px 0;
+  border-bottom:1px solid var(--edge);
+}
+.txn:last-child{border:none}
+.txn-badge{
+  font-family:var(--mono);font-size:8px;font-weight:500;padding:2px 5px;
+  border-radius:3px;flex-shrink:0;letter-spacing:.5px;text-transform:uppercase;margin-top:2px;
+}
+.txn-badge.in{background:var(--gnDim);color:var(--gn)}
+.txn-badge.out{background:var(--rdDim);color:var(--rd)}
+.txn-badge.adj{background:var(--blDim);color:var(--bl)}
+.txn-badge.new{background:var(--amDim);color:var(--am)}
+.txn-badge.del{background:var(--rdDim);color:var(--rd)}
+.txn-body{flex:1;min-width:0}
+.txn-desc{font-size:11px;font-weight:600;color:var(--ink)}
+.txn-detail{font-family:var(--mono);font-size:9px;color:var(--ink3);margin-top:1px}
+
+/* ═══════════════════════════
+   ANIMATIONS
+═══════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.anim{animation:fadeUp .3s cubic-bezier(.16,1,.3,1) both}
+.anim:nth-child(1){animation-delay:20ms}.anim:nth-child(2){animation-delay:40ms}
+.anim:nth-child(3){animation-delay:60ms}.anim:nth-child(4){animation-delay:80ms}
+.anim:nth-child(5){animation-delay:100ms}.anim:nth-child(6){animation-delay:120ms}
+.anim:nth-child(7){animation-delay:140ms}.anim:nth-child(8){animation-delay:160ms}
+
+/* FAB */
+.fab{
+  position:fixed;bottom:calc(64px + var(--sab));right:14px;width:48px;height:48px;
+  border-radius:50%;background:var(--am);color:var(--void);font-size:22px;
+  display:flex;align-items:center;justify-content:center;z-index:90;
+  box-shadow:0 4px 18px rgba(212,162,38,.25);transition:all .15s;
+}
+.fab:active{transform:scale(.9);box-shadow:0 2px 10px rgba(212,162,38,.15)}
+
+/* ═══════════════════════════
+   TAB SUB-NAV
+═══════════════════════════ */
+.subnav{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
+.subnav::-webkit-scrollbar{height:0}
+.subnav-btn{
+  font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.5px;
+  padding:6px 12px;border-radius:20px;border:1px solid var(--edge);color:var(--ink3);
+  white-space:nowrap;flex-shrink:0;transition:all .12s;
+}
+.subnav-btn.on{background:var(--am);color:var(--void);border-color:var(--am)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-brand">
+    <div class="login-logo"><span>S</span></div>
+    <div class="login-title">STOCKROOM</div>
+    <div class="login-sub">L I T E</div>
+  </div>
+  <div class="login-form">
+    <select class="login-select" id="loginUser">
+      <option value="">Select User...</option>
+    </select>
+    <div class="login-pin-wrap" id="pinWrap">
+      <input class="login-pin-dot" type="password" maxlength="1" inputmode="numeric" data-idx="0">
+      <input class="login-pin-dot" type="password" maxlength="1" inputmode="numeric" data-idx="1">
+      <input class="login-pin-dot" type="password" maxlength="1" inputmode="numeric" data-idx="2">
+      <input class="login-pin-dot" type="password" maxlength="1" inputmode="numeric" data-idx="3">
+    </div>
+    <div class="login-error" id="loginErr"></div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">Sign In</button>
+    <div class="login-link">No account? <u onclick="showRegister()">Create one</u></div>
+  </div>
+  <!-- REGISTER -->
+  <div class="login-form hide" id="registerForm">
+    <input class="fi-input" id="regName" placeholder="Full name" style="padding:12px 14px;border-radius:var(--rl)">
+    <select class="login-select" id="regRole">
+      <option value="operator">Operator</option>
+      <option value="admin">Admin</option>
+    </select>
+    <div class="login-pin-wrap" id="regPinWrap">
+      <input class="login-pin-dot" type="password" maxlength="1" inputmode="numeric" data-idx="0">
+      <input class="login-pin-dot" type="password" maxlength="1" inputmode="numeric" data-idx="1">
+      <input class="login-pin-dot" type="password" maxlength="1" inputmode="numeric" data-idx="2">
+      <input class="login-pin-dot" type="password" maxlength="1" inputmode="numeric" data-idx="3">
+    </div>
+    <div class="login-error" id="regErr"></div>
+    <button class="login-btn" onclick="doRegister()">Create Account</button>
+    <div class="login-link"><u onclick="showLogin()">Back to Sign In</u></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MAIN APP
+═══════════════════════════════════════ -->
+<div id="app" class="shell hide">
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="hdr-mark"><span>S</span></div>
+      <div class="hdr-text">
+        <div class="hdr-name">STOCKROOM</div>
+        <div class="hdr-sub">L I T E</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-chip"><div class="dot on" id="nfcDot"></div><span id="nfcLbl">NFC</span></div>
+      <button class="hdr-logout" id="userChip" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- PAGES -->
+  <div class="pages">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="pg on" id="pgDash">
+      <div class="slbl" style="margin-top:2px">Overview</div>
+      <div class="mrow" id="dashMetrics">
+        <div class="mcard hi anim"><div class="mv" id="mTotal">0</div><div class="ml">Total Units</div></div>
+        <div class="mcard anim"><div class="mv" id="mSku">0</div><div class="ml">Unique SKUs</div></div>
+        <div class="mcard anim"><div class="mv" id="mLow">0</div><div class="ml">Low Stock</div><div class="mt warn hide" id="mLowBadge">!</div></div>
+        <div class="mcard anim"><div class="mv" id="mTxn">0</div><div class="ml">Today's Txns</div></div>
+      </div>
+      <div class="slbl">Recent Activity</div>
+      <div class="feed" id="dashFeed">
+        <div class="empty"><div class="empty-icon">&#9776;</div><div class="empty-text">No activity yet.<br>Start scanning or adding items.</div></div>
+      </div>
+    </div>
+
+    <!-- ── SCAN ── -->
+    <div class="pg" id="pgScan">
+      <div class="scan-zone">
+        <div class="scan-toggle">
+          <button class="on" data-m="nfc" onclick="setScanMode('nfc')">&#x1F4F6; NFC Tag</button>
+          <button data-m="barcode" onclick="setScanMode('barcode')">&#x1F4F7; Barcode</button>
+        </div>
+        <div id="nfcArea">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:20px">
+            <div class="scan-ring" id="scanRing">
+              <div class="scan-ring-inner">&#x1F4F6;</div>
+            </div>
+            <div class="scan-lbl" id="scanLbl">TAP TO START NFC SCAN</div>
+            <button class="btn btn-p" style="max-width:260px" id="nfcBtn" onclick="toggleNFC()">Start NFC Scan</button>
+          </div>
+        </div>
+        <div id="barcodeArea" class="hide">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%">
+            <div class="vf" id="vf">
+              <video id="camStream" autoplay playsinline muted></video>
+              <div class="vf-corner vf-tl"></div><div class="vf-corner vf-tr"></div>
+              <div class="vf-corner vf-bl"></div><div class="vf-corner vf-br"></div>
+              <div class="vf-line"></div>
+            </div>
+            <div class="scan-lbl" id="barLbl">POINT CAMERA AT BARCODE</div>
+            <button class="btn btn-s" style="max-width:260px" onclick="toggleCamera()">Toggle Camera</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── INVENTORY ── -->
+    <div class="pg" id="pgInv">
+      <div class="search-wrap">
+        <div class="si">&#128269;</div>
+        <input type="text" placeholder="Search SKU, name, location..." id="searchIn" oninput="renderInventory()">
+      </div>
+      <div class="subnav" id="catFilter"></div>
+      <div class="slbl">Stock (<span id="invCount">0</span>)</div>
+      <div class="inv-list" id="invList"></div>
+    </div>
+
+    <!-- ── ADD / EDIT ITEM ── -->
+    <div class="pg" id="pgAdd">
+      <div class="slbl" style="margin-top:2px" id="formTitle">New Item</div>
+      <div class="fg"><label class="fl">SKU / Part Number</label><input class="fi-input" id="fSku" placeholder="e.g. VIT-325-070"></div>
+      <div class="fg"><label class="fl">Description</label><input class="fi-input" id="fName" placeholder="e.g. Viton O-Ring 3.25 x 0.70"></div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Quantity</label><input type="number" class="fi-input" id="fQty" placeholder="0" min="0"></div>
+        <div class="fg"><label class="fl">Reorder Point</label><input type="number" class="fi-input" id="fReorder" placeholder="10" min="0"></div>
+      </div>
+      <div class="fg"><label class="fl">Location / Bin</label><input class="fi-input" id="fLoc" placeholder="e.g. RACK-A3-SHELF-2" list="locDatalist"><datalist id="locDatalist"></datalist></div>
+      <div class="fg"><label class="fl">Category</label>
+        <select class="fi-input" id="fCat">
+          <option value="General">General</option>
+          <option value="Raw Material">Raw Material</option>
+          <option value="Finished Good">Finished Good</option>
+          <option value="Tooling">Tooling</option>
+          <option value="Consumable">Consumable</option>
+          <option value="Spare Part">Spare Part</option>
+        </select>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Unit Cost ($)</label><input type="number" class="fi-input" id="fCost" placeholder="0.00" min="0" step="0.01"></div>
+        <div class="fg"><label class="fl">Supplier</label><input class="fi-input" id="fSupplier" placeholder="Optional"></div>
+      </div>
+      <div class="fg"><label class="fl">Notes</label><input class="fi-input" id="fNotes" placeholder="Additional notes..."></div>
+      <div class="fg"><label class="fl">NFC Tag ID</label><input class="fi-input" id="fNfc" placeholder="Tap NFC tag to capture..." readonly></div>
+      <input type="hidden" id="fEditId" value="">
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px">
+        <button class="btn btn-p" onclick="saveItem()">&#10003; Save Item</button>
+        <button class="btn btn-s" onclick="clearForm()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- ── LEDGER ── -->
+    <div class="pg" id="pgLedger">
+      <div class="slbl" style="margin-top:2px">Transaction Ledger</div>
+      <div class="search-wrap" style="margin-bottom:10px">
+        <div class="si">&#128269;</div>
+        <input type="text" placeholder="Search transactions..." id="txnSearch" oninput="renderLedger()">
+      </div>
+      <div id="txnList"></div>
+    </div>
+
+    <!-- ── ADMIN ── -->
+    <div class="pg" id="pgAdmin">
+      <div class="slbl" style="margin-top:2px">Administration</div>
+      <div class="admin-card">
+        <div class="admin-card-title">&#128101; User Management</div>
+        <div id="adminUsers"></div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-title">&#128205; Locations</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <input class="fi-input" id="newLocInput" placeholder="New location name..." style="font-size:12px;padding:8px 10px">
+          <button class="btn btn-p" style="width:auto;padding:8px 14px;font-size:11px;flex-shrink:0" onclick="addLocation()">+ Add</button>
+        </div>
+        <div class="loc-list" id="locList"></div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-title">&#127991;&#65039; Categories</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <input class="fi-input" id="newCatInput" placeholder="New category..." style="font-size:12px;padding:8px 10px">
+          <button class="btn btn-p" style="width:auto;padding:8px 14px;font-size:11px;flex-shrink:0" onclick="addCategory()">+ Add</button>
+        </div>
+        <div class="cat-chips" id="catChips"></div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-title" style="color:var(--rd)">&#9888;&#65039; Danger Zone</div>
+        <button class="btn btn-d" onclick="confirmPurge()" style="font-size:12px;padding:10px">Purge All Inventory Data</button>
+        <div style="font-family:var(--mo);font-size:9px;color:var(--ink4);margin-top:6px;text-align:center">This will permanently delete all items and transactions</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAB -->
+  <button class="fab" id="fab" onclick="goAdd()">+</button>
+
+  <!-- BOTTOM NAV -->
+  <div class="bnav">
+    <button class="bnav-item on" data-pg="pgDash" onclick="nav('pgDash')"><span class="ni">&#9632;</span><span class="nl">Home</span></button>
+    <button class="bnav-item" data-pg="pgScan" onclick="nav('pgScan')"><span class="ni">&#9678;</span><span class="nl">Scan</span></button>
+    <button class="bnav-item" data-pg="pgInv" onclick="nav('pgInv')"><span class="ni">&#9776;</span><span class="nl">Stock</span></button>
+    <button class="bnav-item" data-pg="pgLedger" onclick="nav('pgLedger')"><span class="ni">&#128203;</span><span class="nl">Ledger</span></button>
+    <button class="bnav-item" data-pg="pgAdmin" onclick="nav('pgAdmin')"><span class="ni">&#9881;</span><span class="nl">Admin</span></button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><div class="toast-i" id="toastI"></div><div><div class="toast-t" id="toastT"></div><div class="toast-s" id="toastS"></div></div></div>
+
+<!-- ITEM DETAIL MODAL -->
+<div class="modal-bg" id="modalBg" onclick="closeModal()"></div>
+<div class="modal-sheet" id="modalSheet">
+  <div class="modal-handle"></div>
+  <div class="modal-title" id="mdTitle">—</div>
+  <div class="modal-sku" id="mdSku">—</div>
+  <div class="dgrid" id="mdGrid"></div>
+  <div class="qty-adj">
+    <button class="qty-btn" onclick="adjQty(-10)">-10</button>
+    <button class="qty-btn" onclick="adjQty(-1)">−</button>
+    <div class="qty-val" id="mdQty">0</div>
+    <button class="qty-btn" onclick="adjQty(1)">+</button>
+    <button class="qty-btn" onclick="adjQty(10)">+10</button>
+  </div>
+  <div class="fg" style="margin:0 0 10px">
+    <label class="fl">Adjustment Reason</label>
+    <input class="fi-input" id="mdReason" placeholder="e.g. Received shipment, cycle count...">
+  </div>
+  <div class="modal-acts">
+    <button class="btn btn-p" onclick="saveAdj()">Update Stock</button>
+    <button class="btn btn-s" onclick="editFromModal()">Edit</button>
+    <button class="btn btn-d" onclick="confirmDeleteItem()" style="flex:.5">&#128465;</button>
+  </div>
+</div>
+
+<!-- CONFIRM DIALOG -->
+<div class="confirm-bg" id="confirmBg">
+  <div class="confirm-box">
+    <div class="confirm-icon" id="cfIcon">&#9888;&#65039;</div>
+    <div class="confirm-title" id="cfTitle">Are you sure?</div>
+    <div class="confirm-msg" id="cfMsg">This action cannot be undone.</div>
+    <div class="confirm-acts">
+      <button class="btn btn-s" onclick="closeConfirm()">Cancel</button>
+      <button class="btn btn-d" id="cfAction">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ═══════════════════════════════════════
+   DATABASE LAYER — IndexedDB
+   Data persists through app close, phone
+   restart, day changes. Only explicit
+   user-initiated purge removes data.
+═══════════════════════════════════════ */
+const DB='StockRoomLite';const DBV=2;let db=null;
+
+function openDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(DB,DBV);
+    r.onupgradeneeded=e=>{
+      const d=e.target.result;
+      if(!d.objectStoreNames.contains('users')){
+        d.createObjectStore('users',{keyPath:'id'});
+      }
+      if(!d.objectStoreNames.contains('items')){
+        const s=d.createObjectStore('items',{keyPath:'id'});
+        s.createIndex('sku','sku',{unique:false});
+        s.createIndex('category','category',{unique:false});
+        s.createIndex('location','location',{unique:false});
+        s.createIndex('nfcTag','nfcTag',{unique:false});
+      }
+      if(!d.objectStoreNames.contains('transactions')){
+        const s=d.createObjectStore('transactions',{keyPath:'id'});
+        s.createIndex('itemId','itemId',{unique:false});
+        s.createIndex('timestamp','timestamp',{unique:false});
+      }
+      if(!d.objectStoreNames.contains('meta')){
+        d.createObjectStore('meta',{keyPath:'key'});
+      }
+    };
+    r.onsuccess=e=>{db=e.target.result;res(db)};
+    r.onerror=e=>rej(e.target.error);
+  });
+}
+
+function tx(store,mode='readonly'){
+  const t=db.transaction(store,mode);
+  return Array.isArray(store)?store.map(s=>t.objectStore(s)):t.objectStore(store);
+}
+
+function dbGet(store,key){return new Promise((res,rej)=>{const r=tx(store).get(key);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function dbGetAll(store){return new Promise((res,rej)=>{const r=tx(store).getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function dbPut(store,val){return new Promise((res,rej)=>{const r=tx(store,'readwrite').put(val);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function dbDel(store,key){return new Promise((res,rej)=>{const r=tx(store,'readwrite').delete(key);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+function dbClear(store){return new Promise((res,rej)=>{const r=tx(store,'readwrite').clear();r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function ts(){return new Date().toISOString()}
+function today(){return new Date().toISOString().slice(0,10)}
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+let currentUser=null;
+let modalItem=null;
+let modalQtyDelta=0;
+let nfcScanning=false;
+let nfcReader=null;
+let cameraStream=null;
+let barcodeInterval=null;
+let categories=['General','Raw Material','Finished Good','Tooling','Consumable','Spare Part'];
+let locations=[];
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+async function init(){
+  await openDB();
+  // Load meta
+  try{
+    const catMeta=await dbGet('meta','categories');
+    if(catMeta&&catMeta.value)categories=catMeta.value;
+  }catch(e){}
+  try{
+    const locMeta=await dbGet('meta','locations');
+    if(locMeta&&locMeta.value)locations=locMeta.value;
+  }catch(e){}
+  await populateLoginUsers();
+  // Check session
+  const sid=sessionStorage.getItem('sr_user');
+  if(sid){
+    try{
+      const u=await dbGet('users',sid);
+      if(u){currentUser=u;enterApp();return}
+    }catch(e){}
+  }
+  setupPinInputs(document.getElementById('pinWrap'));
+  setupPinInputs(document.getElementById('regPinWrap'));
+}
+
+/* ═══════════════════════════════════════
+   AUTH
+═══════════════════════════════════════ */
+async function populateLoginUsers(){
+  const users=await dbGetAll('users');
+  const sel=document.getElementById('loginUser');
+  sel.innerHTML='<option value="">Select User...</option>';
+  users.forEach(u=>{
+    const o=document.createElement('option');
+    o.value=u.id;o.textContent=u.name+(u.role==='admin'?' (Admin)':'');
+    sel.appendChild(o);
+  });
+}
+
+function setupPinInputs(wrap){
+  const pins=wrap.querySelectorAll('input');
+  pins.forEach((p,i)=>{
+    p.addEventListener('input',()=>{
+      if(p.value.length===1&&i<3)pins[i+1].focus();
+    });
+    p.addEventListener('keydown',e=>{
+      if(e.key==='Backspace'&&!p.value&&i>0){pins[i-1].focus();pins[i-1].value=''}
+    });
+  });
+}
+
+function getPinValue(wrapId){
+  const pins=document.getElementById(wrapId).querySelectorAll('input');
+  return Array.from(pins).map(p=>p.value).join('');
+}
+
+function clearPins(wrapId){
+  document.getElementById(wrapId).querySelectorAll('input').forEach(p=>p.value='');
+}
+
+async function doLogin(){
+  const userId=document.getElementById('loginUser').value;
+  const pin=getPinValue('pinWrap');
+  const err=document.getElementById('loginErr');
+  err.textContent='';
+  if(!userId){err.textContent='Select a user';return}
+  if(pin.length!==4){err.textContent='Enter 4-digit PIN';return}
+  try{
+    const u=await dbGet('users',userId);
+    if(!u){err.textContent='User not found';return}
+    if(u.pin!==pin){err.textContent='Incorrect PIN';clearPins('pinWrap');return}
+    currentUser=u;
+    sessionStorage.setItem('sr_user',u.id);
+    enterApp();
+  }catch(e){err.textContent='Login error'}
+}
+
+function showRegister(){
+  document.querySelector('#loginScreen .login-form:not(.hide)').classList.add('hide');
+  document.getElementById('registerForm').classList.remove('hide');
+}
+function showLogin(){
+  document.getElementById('registerForm').classList.add('hide');
+  document.querySelector('#loginScreen .login-form').classList.remove('hide');
+}
+
+async function doRegister(){
+  const name=document.getElementById('regName').value.trim();
+  const role=document.getElementById('regRole').value;
+  const pin=getPinValue('regPinWrap');
+  const err=document.getElementById('regErr');
+  err.textContent='';
+  if(!name){err.textContent='Enter your name';return}
+  if(pin.length!==4){err.textContent='Enter 4-digit PIN';return}
+  const user={id:uid(),name,role,pin,createdAt:ts()};
+  await dbPut('users',user);
+  currentUser=user;
+  sessionStorage.setItem('sr_user',user.id);
+  toast('&#10003;','Account created','Welcome, '+name,'ok');
+  enterApp();
+}
+
+function doLogout(){
+  sessionStorage.removeItem('sr_user');
+  currentUser=null;
+  stopNFC();stopCamera();
+  document.getElementById('app').classList.add('hide');
+  document.getElementById('loginScreen').classList.remove('hide');
+  clearPins('pinWrap');
+  populateLoginUsers();
+}
+
+async function enterApp(){
+  document.getElementById('loginScreen').classList.add('hide');
+  document.getElementById('app').classList.remove('hide');
+  document.getElementById('userChip').textContent=currentUser.name.split(' ')[0]+' ▾';
+  // Hide admin for operators
+  const adminNav=document.querySelector('[data-pg="pgAdmin"]');
+  if(currentUser.role!=='admin')adminNav.classList.add('hide');
+  else adminNav.classList.remove('hide');
+  checkNFCSupport();
+  await refreshAll();
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+function nav(pgId){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById(pgId).classList.add('on');
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));
+  const btn=document.querySelector(`[data-pg="${pgId}"]`);
+  if(btn)btn.classList.add('on');
+  // Show/hide FAB
+  document.getElementById('fab').style.display=(pgId==='pgDash'||pgId==='pgInv')?'flex':'none';
+  // Refresh
+  if(pgId==='pgDash')refreshDashboard();
+  if(pgId==='pgInv')renderInventory();
+  if(pgId==='pgLedger')renderLedger();
+  if(pgId==='pgAdmin')renderAdmin();
+}
+
+function goAdd(){
+  clearForm();
+  document.getElementById('formTitle').textContent='New Item';
+  nav('pgAdd');
+}
+
+/* ═══════════════════════════════════════
+   REFRESH ALL
+═══════════════════════════════════════ */
+async function refreshAll(){
+  await refreshDashboard();
+  renderInventory();
+  renderCatFilter();
+  updateLocDatalist();
+}
+
+/* ═══════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════ */
+async function refreshDashboard(){
+  const items=await dbGetAll('items');
+  const txns=await dbGetAll('transactions');
+  const todayStr=today();
+  const todayTxns=txns.filter(t=>t.timestamp.startsWith(todayStr));
+  const totalUnits=items.reduce((s,i)=>s+(i.qty||0),0);
+  const lowCount=items.filter(i=>i.qty<=i.reorder).length;
+
+  document.getElementById('mTotal').textContent=totalUnits.toLocaleString();
+  document.getElementById('mSku').textContent=items.length;
+  document.getElementById('mLow').textContent=lowCount;
+  document.getElementById('mTxn').textContent=todayTxns.length;
+
+  const badge=document.getElementById('mLowBadge');
+  if(lowCount>0){badge.classList.remove('hide');badge.textContent='!'}
+  else badge.classList.add('hide');
+
+  // Recent activity (last 20 txns)
+  const feed=document.getElementById('dashFeed');
+  const recent=txns.sort((a,b)=>b.timestamp.localeCompare(a.timestamp)).slice(0,20);
+  if(!recent.length){
+    feed.innerHTML='<div class="empty"><div class="empty-icon">&#9776;</div><div class="empty-text">No activity yet.<br>Start scanning or adding items.</div></div>';
+    return;
+  }
+  feed.innerHTML=recent.map(t=>{
+    const icons={add:'add',receive:'add',adjust:'edit',delete:'del',create:'add',edit:'edit',scan:'scan'};
+    const cls=icons[t.type]||'scan';
+    const emojis={add:'&#10010;',receive:'&#128230;',adjust:'&#9998;',delete:'&#128465;',create:'&#10010;',edit:'&#9998;',scan:'&#128225;'};
+    const emoji=emojis[t.type]||'&#9679;';
+    const d=new Date(t.timestamp);
+    const time=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    const date=d.toLocaleDateString([],{month:'short',day:'numeric'});
+    return `<div class="fi anim"><div class="fi-icon ${cls}">${emoji}</div><div class="fi-body"><div class="fi-title">${esc(t.description)}</div><div class="fi-meta">${esc(t.user)||'System'} &middot; ${esc(t.sku||'')}</div></div><div class="fi-time">${time}<br>${date}</div></div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════
+   INVENTORY
+═══════════════════════════════════════ */
+let catFilterValue='All';
+
+function renderCatFilter(){
+  const wrap=document.getElementById('catFilter');
+  const allCats=['All',...categories];
+  wrap.innerHTML=allCats.map(c=>
+    `<button class="subnav-btn${c===catFilterValue?' on':''}" onclick="setCatFilter('${esc(c)}')">${esc(c)}</button>`
+  ).join('');
+}
+
+window.setCatFilter=function(c){catFilterValue=c;renderCatFilter();renderInventory()};
+
+async function renderInventory(){
+  const items=await dbGetAll('items');
+  const q=(document.getElementById('searchIn').value||'').toLowerCase();
+  let filtered=items;
+  if(catFilterValue!=='All')filtered=filtered.filter(i=>i.category===catFilterValue);
+  if(q)filtered=filtered.filter(i=>
+    (i.sku||'').toLowerCase().includes(q)||
+    (i.name||'').toLowerCase().includes(q)||
+    (i.location||'').toLowerCase().includes(q)||
+    (i.supplier||'').toLowerCase().includes(q)
+  );
+  filtered.sort((a,b)=>(a.sku||'').localeCompare(b.sku||''));
+  document.getElementById('invCount').textContent=filtered.length;
+  const list=document.getElementById('invList');
+  if(!filtered.length){
+    list.innerHTML='<div class="empty"><div class="empty-icon">&#128230;</div><div class="empty-text">No items found.</div></div>';
+    return;
+  }
+  list.innerHTML=filtered.map(i=>{
+    const cls=i.qty<=i.reorder?i.qty===0?'low':'mid':'ok';
+    return `<div class="inv-item anim" onclick="openDetail('${i.id}')">
+      <div class="inv-sku">${esc(i.sku)}</div>
+      <div class="inv-info"><div class="inv-name">${esc(i.name)}</div><div class="inv-loc">${esc(i.location||'—')} &middot; ${esc(i.category)}</div></div>
+      <div class="inv-qty ${cls}">${i.qty}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════
+   ITEM DETAIL MODAL
+═══════════════════════════════════════ */
+async function openDetail(id){
+  const item=await dbGet('items',id);
+  if(!item)return;
+  modalItem=item;
+  modalQtyDelta=0;
+  document.getElementById('mdTitle').textContent=item.name;
+  document.getElementById('mdSku').textContent=item.sku;
+  document.getElementById('mdQty').textContent=item.qty;
+  document.getElementById('mdReason').value='';
+
+  const grid=document.getElementById('mdGrid');
+  grid.innerHTML=`
+    <div class="dcell"><div class="dl">Location</div><div class="dv">${esc(item.location||'—')}</div></div>
+    <div class="dcell"><div class="dl">Category</div><div class="dv">${esc(item.category)}</div></div>
+    <div class="dcell"><div class="dl">Reorder At</div><div class="dv">${item.reorder}</div></div>
+    <div class="dcell"><div class="dl">Unit Cost</div><div class="dv">$${(item.cost||0).toFixed(2)}</div></div>
+    <div class="dcell"><div class="dl">Supplier</div><div class="dv">${esc(item.supplier||'—')}</div></div>
+    <div class="dcell"><div class="dl">NFC Tag</div><div class="dv" style="font-size:10px">${esc(item.nfcTag||'None')}</div></div>
+    ${item.notes?`<div class="dcell" style="grid-column:1/-1"><div class="dl">Notes</div><div class="dv" style="font-size:12px;font-weight:500">${esc(item.notes)}</div></div>`:''}
+    <div class="dcell" style="grid-column:1/-1"><div class="dl">Last Updated</div><div class="dv" style="font-size:11px">${new Date(item.updatedAt).toLocaleString()}</div></div>
+  `;
+  document.getElementById('modalBg').classList.add('vis');
+  document.getElementById('modalSheet').classList.add('vis');
+}
+
+window.openDetail=openDetail;
+
+function closeModal(){
+  document.getElementById('modalBg').classList.remove('vis');
+  document.getElementById('modalSheet').classList.remove('vis');
+  modalItem=null;modalQtyDelta=0;
+}
+
+function adjQty(delta){
+  if(!modalItem)return;
+  const newVal=modalItem.qty+modalQtyDelta+delta;
+  if(newVal<0)return;
+  modalQtyDelta+=delta;
+  document.getElementById('mdQty').textContent=modalItem.qty+modalQtyDelta;
+  vibrate(15);
+}
+
+async function saveAdj(){
+  if(!modalItem||modalQtyDelta===0){
+    toast('&#9888;&#65039;','No changes','Quantity unchanged','info');return;
+  }
+  const reason=document.getElementById('mdReason').value.trim()||'Manual adjustment';
+  const oldQty=modalItem.qty;
+  modalItem.qty+=modalQtyDelta;
+  modalItem.updatedAt=ts();
+  await dbPut('items',modalItem);
+  await logTxn('adjust',modalItem,`${oldQty} → ${modalItem.qty}: ${reason}`,modalQtyDelta);
+  toast('&#10003;',`Stock updated: ${modalItem.sku}`,`${oldQty} → ${modalItem.qty}`,'ok');
+  closeModal();
+  await refreshAll();
+}
+
+function editFromModal(){
+  if(!modalItem)return;
+  closeModal();
+  loadItemToForm(modalItem);
+  nav('pgAdd');
+}
+
+function confirmDeleteItem(){
+  if(!modalItem)return;
+  showConfirm(
+    '&#128465;',
+    `Delete ${modalItem.sku}?`,
+    `"${modalItem.name}" will be permanently removed. This cannot be undone.`,
+    async()=>{
+      await logTxn('delete',modalItem,'Item deleted');
+      await dbDel('items',modalItem.id);
+      toast('&#128465;','Item deleted',modalItem.sku,'err');
+      closeModal();closeConfirm();
+      await refreshAll();
+    }
+  );
+}
+
+/* ═══════════════════════════════════════
+   ADD / EDIT ITEM
+═══════════════════════════════════════ */
+function loadItemToForm(item){
+  document.getElementById('formTitle').textContent='Edit Item';
+  document.getElementById('fEditId').value=item.id;
+  document.getElementById('fSku').value=item.sku||'';
+  document.getElementById('fName').value=item.name||'';
+  document.getElementById('fQty').value=item.qty||0;
+  document.getElementById('fReorder').value=item.reorder||0;
+  document.getElementById('fLoc').value=item.location||'';
+  document.getElementById('fCat').value=item.category||'General';
+  document.getElementById('fCost').value=item.cost||'';
+  document.getElementById('fSupplier').value=item.supplier||'';
+  document.getElementById('fNotes').value=item.notes||'';
+  document.getElementById('fNfc').value=item.nfcTag||'';
+}
+
+function clearForm(){
+  ['fSku','fName','fQty','fReorder','fLoc','fCost','fSupplier','fNotes','fNfc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fCat').value='General';
+  document.getElementById('fEditId').value='';
+  document.getElementById('formTitle').textContent='New Item';
+}
+
+async function saveItem(){
+  const sku=document.getElementById('fSku').value.trim();
+  const name=document.getElementById('fName').value.trim();
+  const qty=parseInt(document.getElementById('fQty').value)||0;
+  const reorder=parseInt(document.getElementById('fReorder').value)||0;
+  const location=document.getElementById('fLoc').value.trim();
+  const category=document.getElementById('fCat').value;
+  const cost=parseFloat(document.getElementById('fCost').value)||0;
+  const supplier=document.getElementById('fSupplier').value.trim();
+  const notes=document.getElementById('fNotes').value.trim();
+  const nfcTag=document.getElementById('fNfc').value.trim();
+  const editId=document.getElementById('fEditId').value;
+
+  if(!sku){toast('&#9888;&#65039;','SKU required','Enter a part number','err');return}
+  if(!name){toast('&#9888;&#65039;','Name required','Enter a description','err');return}
+
+  // Auto-add location if new
+  if(location&&!locations.includes(location)){
+    locations.push(location);
+    await dbPut('meta',{key:'locations',value:locations});
+  }
+
+  if(editId){
+    // Update existing
+    const existing=await dbGet('items',editId);
+    if(!existing){toast('&#9888;&#65039;','Item not found','','err');return}
+    const changes=[];
+    if(existing.sku!==sku)changes.push(`SKU: ${existing.sku}→${sku}`);
+    if(existing.name!==name)changes.push(`Name updated`);
+    if(existing.qty!==qty)changes.push(`Qty: ${existing.qty}→${qty}`);
+    if(existing.location!==location)changes.push(`Loc: ${existing.location||'—'}→${location}`);
+
+    Object.assign(existing,{sku,name,qty,reorder,location,category,cost,supplier,notes,nfcTag,updatedAt:ts()});
+    await dbPut('items',existing);
+    await logTxn('edit',existing,changes.join(', ')||'Item updated');
+    toast('&#10003;','Item updated',sku,'ok');
+  } else {
+    // Create new
+    const item={id:uid(),sku,name,qty,reorder,location,category,cost,supplier,notes,nfcTag,createdAt:ts(),updatedAt:ts()};
+    await dbPut('items',item);
+    await logTxn('create',item,'New item added');
+    toast('&#10003;','Item created',sku+' — '+name,'ok');
+  }
+  clearForm();
+  nav('pgInv');
+  await refreshAll();
+}
+
+/* ═══════════════════════════════════════
+   TRANSACTION LEDGER
+═══════════════════════════════════════ */
+async function logTxn(type,item,description,qtyDelta){
+  const txnObj={
+    id:uid(),
+    type,
+    itemId:item?item.id:null,
+    sku:item?item.sku:'',
+    description,
+    qtyDelta:qtyDelta||0,
+    user:currentUser?currentUser.name:'Unknown',
+    userId:currentUser?currentUser.id:null,
+    timestamp:ts()
+  };
+  await dbPut('transactions',txnObj);
+}
+
+async function renderLedger(){
+  const txns=await dbGetAll('transactions');
+  const q=(document.getElementById('txnSearch').value||'').toLowerCase();
+  let filtered=txns.sort((a,b)=>b.timestamp.localeCompare(a.timestamp));
+  if(q)filtered=filtered.filter(t=>
+    (t.description||'').toLowerCase().includes(q)||
+    (t.sku||'').toLowerCase().includes(q)||
+    (t.user||'').toLowerCase().includes(q)||
+    (t.type||'').toLowerCase().includes(q)
+  );
+  const list=document.getElementById('txnList');
+  if(!filtered.length){
+    list.innerHTML='<div class="empty"><div class="empty-icon">&#128203;</div><div class="empty-text">No transactions recorded.</div></div>';
+    return;
+  }
+  list.innerHTML=filtered.slice(0,100).map(t=>{
+    const clsMap={create:'new',add:'in',receive:'in',adjust:'adj',delete:'del',edit:'adj',scan:'adj'};
+    const cls=clsMap[t.type]||'adj';
+    const d=new Date(t.timestamp);
+    return `<div class="txn"><div class="txn-badge ${cls}">${t.type}</div><div class="txn-body"><div class="txn-desc">${esc(t.description)}</div><div class="txn-detail">${esc(t.sku)} &middot; ${esc(t.user)} &middot; ${d.toLocaleString()}</div></div></div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════
+   ADMIN PANEL
+═══════════════════════════════════════ */
+async function renderAdmin(){
+  if(currentUser.role!=='admin')return;
+  // Users
+  const users=await dbGetAll('users');
+  const uWrap=document.getElementById('adminUsers');
+  uWrap.innerHTML=users.map(u=>`
+    <div class="admin-user">
+      <div class="admin-user-info">
+        <div class="admin-user-name">${esc(u.name)}${u.id===currentUser.id?' (you)':''}</div>
+        <div class="admin-user-role">${u.role} &middot; PIN ****</div>
+      </div>
+      <div class="admin-user-acts">
+        ${u.id!==currentUser.id?`<button class="admin-small-btn danger" onclick="confirmDeleteUser('${u.id}','${esc(u.name)}')">Remove</button>`:''}
+      </div>
+    </div>
+  `).join('');
+
+  // Locations
+  const items=await dbGetAll('items');
+  const lWrap=document.getElementById('locList');
+  if(!locations.length){lWrap.innerHTML='<div style="font-size:11px;color:var(--ink4);padding:8px 0">No locations defined</div>'}
+  else{
+    lWrap.innerHTML=locations.map(l=>{
+      const cnt=items.filter(i=>i.location===l).length;
+      return `<div class="loc-item"><div class="loc-name">${esc(l)}</div><div class="loc-count">${cnt} items</div></div>`;
+    }).join('');
+  }
+
+  // Categories
+  const cWrap=document.getElementById('catChips');
+  cWrap.innerHTML=categories.map(c=>
+    `<div class="cat-chip">${esc(c)}<span class="x" onclick="confirmDeleteCat('${esc(c)}')">&times;</span></div>`
+  ).join('');
+
+  // Update form dropdowns
+  updateCatSelect();
+  updateLocDatalist();
+}
+
+async function addLocation(){
+  const inp=document.getElementById('newLocInput');
+  const v=inp.value.trim().toUpperCase();
+  if(!v){toast('&#9888;&#65039;','Enter a location name','','err');return}
+  if(locations.includes(v)){toast('&#9888;&#65039;','Location already exists','','err');return}
+  locations.push(v);
+  await dbPut('meta',{key:'locations',value:locations});
+  inp.value='';
+  toast('&#10003;','Location added',v,'ok');
+  renderAdmin();updateLocDatalist();
+}
+
+async function addCategory(){
+  const inp=document.getElementById('newCatInput');
+  const v=inp.value.trim();
+  if(!v){toast('&#9888;&#65039;','Enter a category name','','err');return}
+  if(categories.includes(v)){toast('&#9888;&#65039;','Category already exists','','err');return}
+  categories.push(v);
+  await dbPut('meta',{key:'categories',value:categories});
+  inp.value='';
+  toast('&#10003;','Category added',v,'ok');
+  renderAdmin();updateCatSelect();renderCatFilter();
+}
+
+function updateCatSelect(){
+  const sel=document.getElementById('fCat');
+  const cur=sel.value;
+  sel.innerHTML=categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  sel.value=cur||'General';
+}
+
+function updateLocDatalist(){
+  document.getElementById('locDatalist').innerHTML=locations.map(l=>`<option value="${esc(l)}">`).join('');
+}
+
+window.confirmDeleteUser=function(id,name){
+  showConfirm('&#128101;',`Remove ${name}?`,'This user will be permanently deleted.',async()=>{
+    await dbDel('users',id);toast('&#128465;','User removed',name,'err');closeConfirm();renderAdmin();
+  });
+};
+
+window.confirmDeleteCat=function(cat){
+  showConfirm('&#127991;&#65039;',`Delete "${cat}"?`,'Items in this category will keep their current category.',async()=>{
+    categories=categories.filter(c=>c!==cat);
+    await dbPut('meta',{key:'categories',value:categories});
+    toast('&#128465;','Category removed',cat,'err');closeConfirm();renderAdmin();renderCatFilter();updateCatSelect();
+  });
+};
+
+function confirmPurge(){
+  showConfirm(
+    '&#9888;&#65039;',
+    'PURGE ALL DATA?',
+    'This will permanently delete ALL inventory items AND transaction history. User accounts will remain. This CANNOT be undone.',
+    ()=>{
+      closeConfirm();
+      // Double confirm
+      setTimeout(()=>{
+        showConfirm(
+          '&#128680;',
+          'FINAL CONFIRMATION',
+          'Are you ABSOLUTELY sure? Type "PURGE" mentally and click confirm. Every item and transaction will be destroyed forever.',
+          async()=>{
+            await dbClear('items');
+            await dbClear('transactions');
+            toast('&#128465;','All data purged','Inventory and transactions cleared','err');
+            closeConfirm();
+            await refreshAll();
+            renderAdmin();
+          }
+        );
+      },300);
+    }
+  );
+}
+
+/* ═══════════════════════════════════════
+   NFC SCANNING
+═══════════════════════════════════════ */
+function checkNFCSupport(){
+  if('NDEFReader' in window){
+    document.getElementById('nfcDot').className='dot on';
+    document.getElementById('nfcLbl').textContent='NFC';
+  }else{
+    document.getElementById('nfcDot').className='dot off';
+    document.getElementById('nfcLbl').textContent='NO NFC';
+  }
+}
+
+async function toggleNFC(){
+  if(nfcScanning){stopNFC();return}
+  if(!('NDEFReader' in window)){
+    toast('&#9888;&#65039;','NFC not available','Your browser does not support Web NFC','err');return;
+  }
+  try{
+    nfcReader=new NDEFReader();
+    await nfcReader.scan();
+    nfcScanning=true;
+    document.getElementById('scanRing').classList.add('active');
+    document.getElementById('scanLbl').textContent='SCANNING — HOLD TAG NEAR PHONE';
+    document.getElementById('scanLbl').classList.add('lit');
+    document.getElementById('nfcBtn').textContent='Stop NFC Scan';
+    vibrate(30);
+
+    nfcReader.addEventListener('reading',async({serialNumber})=>{
+      vibrate([50,30,50]);
+      document.getElementById('scanRing').classList.remove('active');
+      document.getElementById('scanRing').classList.add('hit');
+      document.getElementById('scanLbl').textContent='TAG DETECTED: '+serialNumber;
+
+      // Check if on Add page — capture NFC ID
+      if(document.getElementById('pgAdd').classList.contains('on')){
+        document.getElementById('fNfc').value=serialNumber;
+        toast('&#x1F4F6;','NFC Tag captured',serialNumber,'ok');
+      }else{
+        // Lookup item by NFC tag
+        const items=await dbGetAll('items');
+        const match=items.find(i=>i.nfcTag===serialNumber);
+        if(match){
+          toast('&#128225;','Item found',match.sku+' — '+match.name,'ok');
+          await logTxn('scan',match,'NFC scan: '+serialNumber);
+          openDetail(match.id);
+        }else{
+          toast('&#9888;&#65039;','Unknown tag',serialNumber+' — not linked to any item','info');
+        }
+      }
+      setTimeout(()=>{
+        document.getElementById('scanRing').classList.remove('hit');
+        if(nfcScanning)document.getElementById('scanRing').classList.add('active');
+        document.getElementById('scanLbl').textContent=nfcScanning?'SCANNING — HOLD TAG NEAR PHONE':'TAP TO START NFC SCAN';
+      },2000);
+      refreshDashboard();
+    });
+
+    nfcReader.addEventListener('readingerror',()=>{
+      toast('&#9888;&#65039;','Read error','Could not read NFC tag','err');
+    });
+  }catch(e){
+    toast('&#9888;&#65039;','NFC Error',e.message||'Permission denied','err');
+    stopNFC();
+  }
+}
+
+function stopNFC(){
+  nfcScanning=false;nfcReader=null;
+  document.getElementById('scanRing').className='scan-ring';
+  document.getElementById('scanLbl').textContent='TAP TO START NFC SCAN';
+  document.getElementById('scanLbl').classList.remove('lit');
+  document.getElementById('nfcBtn').textContent='Start NFC Scan';
+}
+
+/* ═══════════════════════════════════════
+   BARCODE SCANNING
+═══════════════════════════════════════ */
+function setScanMode(mode){
+  document.querySelectorAll('.scan-toggle button').forEach(b=>b.classList.toggle('on',b.dataset.m===mode));
+  document.getElementById('nfcArea').classList.toggle('hide',mode!=='nfc');
+  document.getElementById('barcodeArea').classList.toggle('hide',mode!=='barcode');
+  if(mode==='nfc'){stopCamera()}
+  else{startCamera()}
+}
+
+async function startCamera(){
+  try{
+    const video=document.getElementById('camStream');
+    cameraStream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}}
+    });
+    video.srcObject=cameraStream;
+    startBarcodeDetection(video);
+  }catch(e){
+    toast('&#9888;&#65039;','Camera error',e.message||'Permission denied','err');
+  }
+}
+
+function stopCamera(){
+  if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null}
+  if(barcodeInterval){clearInterval(barcodeInterval);barcodeInterval=null}
+}
+
+function toggleCamera(){stopCamera();startCamera()}
+
+function startBarcodeDetection(video){
+  if(!('BarcodeDetector' in window)){
+    document.getElementById('barLbl').textContent='BARCODE API NOT SUPPORTED';
+    return;
+  }
+  const detector=new BarcodeDetector({formats:['qr_code','ean_13','ean_8','code_128','code_39','upc_a','upc_e','itf','data_matrix']});
+  let lastCode='';let lastTime=0;
+  barcodeInterval=setInterval(async()=>{
+    if(video.readyState<2)return;
+    try{
+      const codes=await detector.detect(video);
+      if(codes.length>0){
+        const code=codes[0].rawValue;
+        const now=Date.now();
+        if(code===lastCode&&now-lastTime<3000)return;
+        lastCode=code;lastTime=now;
+        vibrate([50,30,50]);
+        document.getElementById('barLbl').textContent='DETECTED: '+code;
+
+        // Lookup
+        const items=await dbGetAll('items');
+        const match=items.find(i=>i.sku===code||i.nfcTag===code);
+        if(match){
+          toast('&#128225;','Item found',match.sku+' — '+match.name,'ok');
+          await logTxn('scan',match,'Barcode scan: '+code);
+          openDetail(match.id);
+        }else{
+          toast('&#9888;&#65039;','No match','Code: '+code,'info');
+        }
+        refreshDashboard();
+        setTimeout(()=>{document.getElementById('barLbl').textContent='POINT CAMERA AT BARCODE'},2000);
+      }
+    }catch(e){}
+  },500);
+}
+
+/* ═══════════════════════════════════════
+   CONFIRM DIALOG
+═══════════════════════════════════════ */
+function showConfirm(icon,title,msg,onConfirm){
+  document.getElementById('cfIcon').innerHTML=icon;
+  document.getElementById('cfTitle').textContent=title;
+  document.getElementById('cfMsg').textContent=msg;
+  const btn=document.getElementById('cfAction');
+  const newBtn=btn.cloneNode(true);
+  btn.parentNode.replaceChild(newBtn,btn);
+  newBtn.id='cfAction';
+  newBtn.textContent='Confirm';
+  newBtn.className='btn btn-d';
+  newBtn.addEventListener('click',onConfirm);
+  document.getElementById('confirmBg').classList.add('vis');
+}
+
+function closeConfirm(){document.getElementById('confirmBg').classList.remove('vis')}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+let toastTimer=null;
+function toast(icon,text,sub,type){
+  const t=document.getElementById('toast');
+  document.getElementById('toastI').innerHTML=icon;
+  document.getElementById('toastT').textContent=text;
+  document.getElementById('toastS').textContent=sub||'';
+  t.className='toast '+(type||'ok')+' vis';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('vis'),3000);
+}
+
+/* ═══════════════════════════════════════
+   HAPTICS
+═══════════════════════════════════════ */
+function vibrate(pattern){try{navigator.vibrate(pattern)}catch(e){}}
+
+/* ═══════════════════════════════════════
+   ESCAPE HTML
+═══════════════════════════════════════ */
+function esc(s){
+  if(!s)return'';
+  const d=document.createElement('div');d.textContent=s;return d.innerHTML;
+}
+
+/* ═══════════════════════════════════════
+   EXPOSE GLOBALS
+═══════════════════════════════════════ */
+window.doLogin=doLogin;window.doRegister=doRegister;window.doLogout=doLogout;
+window.showRegister=showRegister;window.showLogin=showLogin;
+window.nav=nav;window.goAdd=goAdd;window.clearForm=clearForm;window.saveItem=saveItem;
+window.setScanMode=setScanMode;window.toggleNFC=toggleNFC;window.toggleCamera=toggleCamera;
+window.adjQty=adjQty;window.saveAdj=saveAdj;window.editFromModal=editFromModal;
+window.confirmDeleteItem=confirmDeleteItem;window.closeModal=closeModal;
+window.closeConfirm=closeConfirm;window.addLocation=addLocation;window.addCategory=addCategory;
+window.confirmPurge=confirmPurge;window.renderInventory=renderInventory;window.renderLedger=renderLedger;
+
+/* ═══════════════════════════════════════
+   BOOT
+═══════════════════════════════════════ */
+init().catch(e=>console.error('StockRoom LITE init error:',e));
+
+})();
+</script>
+</body>
+</html>
